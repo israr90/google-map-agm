@@ -1,0 +1,155 @@
+
+   
+<div class="parentDiv">
+  <div class="row">
+    <div class="col-md-4">
+        <div class="search">
+          <input type="text" placeholder="Search.." class="searchTxtbox"> 
+        </div>
+     
+        <h3 class="HeaderTitle"> <img src="./assets/images/search.png" class="imgageHaderS" >  &nbsp; <label class="Title"> Rechercher </label> &nbsp;  <img src="./assets/images/mice.png" class="imgageHader"></h3>
+       
+        <ejs-accordion expandMode='Single'>
+          <e-accordionitems >
+            <e-accordionitem expanded='true'  *ngFor="let marker of DeviceList"  >
+             
+             <div *ngFor="let mar of marker.EventData" >
+             
+              <ng-template #header >
+                  
+                <label class="main">
+                  <input type="checkbox" (change)="GetTableDatAndFill($event,mar.Device)" checked="{{mar.isActive}}"  id="{{mar.Device}}"> 
+                  <span class="geekmark"></span>
+              </label>
+              <a (click)="expanded(mar.Device)">
+                  &nbsp;
+                  <img src="./assets/images/vehicle.png"  class="navHeaderImg">  &nbsp;  &nbsp;<label class="lbTExt">{{marker.Device_desc}}</label>  &nbsp;
+                  
+                  <b *ngIf="mar.StatusCode_desc=='ChargeComplete'" class="greenText" > 
+                    
+                    <img src="./assets/images/ChargeComplete.jpg" class="icon-widt">
+                    </b>  
+                  <b *ngIf="mar.StatusCode_desc=='IgnitionOff'" class="redText">    <img src="./assets/images/IgnitionOff.jpg" class="icon-widt"></b>  
+                  <b *ngIf="mar.StatusCode_desc=='En Marche'" class="greenText">   <img src="./assets/images/en-route.jpg" class="icon-widt"></b>  
+                  
+                  
+
+                  &nbsp;  <img src="./assets/images/Setting.png"  class="SettingHeaderImg"> 
+                  <p class="bottomTxt">{{mar.Address}}</p>
+          </a>
+              </ng-template>
+              <ng-template #content>
+                <!-- title row -->
+                <div class="contact">
+                    <div class="box"> Position
+                    <img src="./assets/images/map.png" width="12px">
+                  </div>
+                  <div class="box">Trajet</div>
+                  <div class="box">Activate</div>
+                </div>
+           <!-- row 1 data -->
+           <div class="contact">
+            <div class="boxNested"> 
+              
+              <img src="./assets/images/speed.jpg" class="icon-widt-bottom">
+              {{mar.Speed}} {{mar.Speed_units}}
+            </div>
+            <div class="boxNested">
+              <img src="./assets/images/tijarat.jpg" class="icon-widt-bottom">
+              {{mar.EngineFuelUsed}} {{mar.EngineFuelUsed_units}}</div>
+            <div class="boxNested">
+              <img src="./assets/images/fuelconsumption.jpg" class="icon-widt-bottom">
+              {{mar.Odometer}}</div>
+              </div>
+           <!-- row 2 data -->
+           <!-- <div class="contactN">
+            <div class="boxNested"> {{Response1.consomFuelL}}
+            </div>
+            <div class="boxNested">{{Response1.minMarche}}</div>
+            <div class="boxNested"> </div>
+           </div> -->
+              </ng-template>
+            </div>
+            </e-accordionitem>
+          </e-accordionitems>
+      </ejs-accordion>
+    
+    
+    </div>
+    <div class="col-md-8">
+      <div class="resizeable" >
+        <agm-map 
+        [maxZoom]="15"
+        [minZoom]="5"
+        [fitBounds]="true">
+      
+        
+        <agm-marker 
+          *ngFor="let marker of EventData" 
+          [latitude]="marker.GPSPoint_lat" 
+          [longitude]="marker.GPSPoint_lon" 
+          [agmFitBounds]="true"   [label]="{fontSize: '16px',fontWeight: 'bold',color: 'black', text: marker.markerDescription}"
+          
+          [iconUrl]="icon"
+         
+          (markerClick)="clickMarker(infowindow)">
+      
+          <agm-info-window 
+            [disableAutoPan]="false" 
+            #infowindow>
+                <div   >
+                  <h4>{{marker.markerDescription}}</h4>
+                  <p>{{marker.Address}}</p>              
+              </div>
+
+
+          </agm-info-window>
+        </agm-marker>
+      
+      
+      </agm-map>
+    </div>
+      <div class="resizeable" >
+
+      
+      <table class="table  table-bordered">
+
+        <tr style="background-color: #2A73A0;"><th>Start</th> <th>Duration</th> <th>Initial Position</th>
+          <th>Finish</th>
+          <th>Final Position</th>
+          <th>Distance</th>
+          <th>Duration</th>
+          <th></th>
+        </tr>
+        <tr *ngIf="isLoader">
+          <td colspan="8">  
+            <p  class="loader" > 
+            </p>
+          </td>
+        </tr>
+        <tr  *ngFor="let eventdata of tableModelList" >
+          <td> </td>
+          <td>{{eventdata.Timestamp |  date: 'yyyy/MM/dd h:mm:ss a'}}</td>
+          <td>{{eventdata.Address}}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          
+        </tr>
+        
+      </table>
+    </div>
+      
+    </div>
+  </div>
+  
+
+  <!-- Disable -->
+  
+</div>
+
+ 
+
+  
+
